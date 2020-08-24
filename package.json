@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "nyc ava",
-    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov --disable=gcov",
+    "report-coverage": "nyc --reporter=lcov ava",
+    "coverage": "codecov",
     "mutode": "mutode"
   },
   "keywords": [
