@@ -4,7 +4,8 @@
   "description": "A tool that checks if a given grammar is LL(1).",
   "main": "src/index.js",
   "scripts": {
-    "test": "nyc ava"
+    "test":  "nyc ava",
+    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
   },
   "keywords": [
     "LL(1)",
