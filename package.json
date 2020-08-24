@@ -4,7 +4,7 @@
   "description": "A tool that checks if a given grammar is LL(1).",
   "main": "src/index.js",
   "scripts": {
-    "test": "ava"
+    "test": "nyc ava"
   },
   "keywords": [
     "LL(1)",
@@ -13,7 +13,8 @@
   "author": "Andrea Cattaneo, Matteo Locatelli",
   "license": "MIT",
   "devDependencies": {
-    "ava": "^2.4.0"
+    "ava": "^2.4.0",
+    "nyc": "^15.1.0"
   },
   "dependencies": {
     "antlr4": "^4.7.2"
