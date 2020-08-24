@@ -3,5 +3,3 @@ node_js:
   - 12
 install:
   - npm install -g codecov nyc ava
-script:
-  - nyc ava
