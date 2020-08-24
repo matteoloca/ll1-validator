@@ -4,9 +4,10 @@
   "description": "A tool that checks if a given grammar is LL(1).",
   "main": "src/index.js",
   "scripts": {
-    "test":  "nyc ava",
+    "test": "nyc ava",
     "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov --disable=gcov",
-    "mutode": "mutode"  },
+    "mutode": "mutode"
+  },
   "keywords": [
     "LL(1)",
     "Grammar validator"
@@ -18,7 +19,8 @@
     "nyc": "^15.1.0"
   },
   "dependencies": {
-    "antlr4": "^4.7.2"
+    "antlr4": "^4.7.2",
+    "mutode": "^1.4.2"
   },
   "repository": "https://github.com/matteoloca/ll1-validator",
   "ava": {

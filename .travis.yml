@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - 12
 install:
-  - npm install codecov nyc ava
+  - npm install codecov nyc ava mutode
 scripts:
-  - report-coverage
+  - nyc report --reporter=text-lcov > coverage.lcov && codecov --disable=gcov
   - mutode 
