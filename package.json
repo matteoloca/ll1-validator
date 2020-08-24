@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test":  "nyc ava",
-    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
-  },
+    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov --disable=gcov",
+    "mutode": "mutode"  },
   "keywords": [
     "LL(1)",
     "Grammar validator"
