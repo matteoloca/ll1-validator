@@ -18,7 +18,7 @@
   "dependencies": {
     "antlr4": "^4.7.2"
   },
-  "repository": "https://github.com/imcatta/ll1-validator",
+  "repository": "https://github.com/matteoloca/ll1-validator",
   "ava": {
     "files": [
       "test/**/*"
