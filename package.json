@@ -7,7 +7,8 @@
     "test": "nyc ava",
     "report-coverage": "nyc --reporter=lcov ava",
     "coverage": "codecov",
-    "mutode": "mutode"
+    "mutode": "mutode",
+    "staticAnalisys": "npx eslint src/*.js"
   },
   "keywords": [
     "LL(1)",
@@ -16,12 +17,21 @@
   "author": "Andrea Cattaneo, Matteo Locatelli",
   "license": "MIT",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.10.1",
+    "@typescript-eslint/parser": "^3.10.1",
     "ava": "^2.4.0",
+    "eslint": "^7.7.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "nyc": "^15.1.0"
   },
   "dependencies": {
     "antlr4": "^4.7.2",
-    "mutode": "^1.4.2"
+    "mutode": "^1.4.2",
+    "source-map-loader": "^1.0.2"
   },
   "repository": "https://github.com/matteoloca/ll1-validator",
   "ava": {

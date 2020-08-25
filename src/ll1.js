@@ -1,7 +1,10 @@
 const parser = require('./parser');
 const errors = require('./errors');
+const SpecJS = require('@alfonsofilho/specjs');
+const assert = require('assert');
 
 function calculateNullables(input) {
+
     const grammar = input.grammar;
     const nonTerminals = input.nonTerminals;
     const nullableRules = {};
@@ -54,9 +57,11 @@ function calculateNullables(input) {
     }
 
     return { nullableRules, nullableNonTerminals }
+
 }
 
 function ruleIsNullable(rule, nullableNonTerminals) {
+
     let currentResult = true;
     for (const item of rule) {
         if (item.type === parser.TERMINAL) {
@@ -241,9 +246,15 @@ function calculateFollowSets(input) {
     return followsets;
 }
 
+/**
+ * 
+ * @param {object} obj 
+ * @param {Number} iter 
+ */
 function isDifferent(obj, iter) {
     var ret = false;
     Object.keys(obj).forEach(e => {
+        assert(obj[e].length>iter);
         var newRow = obj[e][iter];
         var oldRow = obj[e][iter - 1];
 
@@ -251,14 +262,19 @@ function isDifferent(obj, iter) {
             ret = true;
     });
     return ret;
+
 }
 
+/**
+ * 
+ * @param {object} input 
+ */
 function calculateLookAheads(input) {
     const grammar = input.grammar;
     var ret = {};
     const axiom = input.startSymbol;
     const firstSets = calculateFirstSets(input);
-    const followSets = calculateFollowSets(input, axiom);
+    const followSets = calculateFollowSets(input);
     const nullableRules = calculateNullables(input).nullableRules;
     input.nonTerminals.forEach(l => {
         ret[l] = [];
@@ -295,7 +311,15 @@ function isLL1(input) {
     return res;
 }
 
-function calculateConflicts(nonTerminal, input = {}, lookaheads = []) { // input and/or followsets MUST BE passed
+/**
+ * 
+ * @param {String} nonTerminal 
+ * @param {Object} input 
+ * @param {Array<Array<String>>} lookaheads 
+ */
+function calculateConflicts(nonTerminal, input = {}, lookaheads = {}) { // input and/or followsets MUST BE passed
+    assert(nonTerminal!=null)
+    
     var terminals = [];
     var ret = [];
     if (lookaheads == []) {

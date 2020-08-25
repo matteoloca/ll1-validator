@@ -96,6 +96,7 @@ test('complex case', t => {
 
 test('complex case 2', t => {
     const input = `
+    //commento di prova \n
     s -> a d;
     s -> ;
     d -> b;
