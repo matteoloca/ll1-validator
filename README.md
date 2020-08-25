@@ -5,6 +5,7 @@
 ![](https://github.com/imcatta/ll1-validator/workflows/Node%20CI/badge.svg)
 ![](https://github.com/imcatta/ll1-validator/workflows/Node.js%20Package/badge.svg)
 ![](https://travis-ci.com/matteoloca/ll1-validator.svg?branch=master)
+[![codecov](https://codecov.io/gh/matteoloca/ll1-validator/branch/master/graph/badge.svg)](https://codecov.io/gh/matteoloca/ll1-validator)
 
 LL(1) Validator is a javascript package that checks if a given a [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar) is a [LL(1) grammar](https://en.wikipedia.org/wiki/LL_grammar).
 
