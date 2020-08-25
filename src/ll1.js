@@ -1,6 +1,5 @@
 const parser = require('./parser');
 const errors = require('./errors');
-const SpecJS = require('@alfonsofilho/specjs');
 const assert = require('assert');
 
 function calculateNullables(input) {
