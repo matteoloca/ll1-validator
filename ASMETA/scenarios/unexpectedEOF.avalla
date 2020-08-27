@@ -1,0 +1,13 @@
+scenario missingArrow
+load ../ll1validator.asm
+
+check isEmpty( ruleList );
+check isEmpty( actRule );
+ 
+exec input := "S";
+step
+exec input := "->";
+step
+exec input := "";
+step
+check readState=ERR;

@@ -9,7 +9,7 @@
     "test": "nyc ava",
     "report-coverage": "nyc --reporter=lcov ava",
     "coverage": "codecov",
-    "mutode": "mutode lib/parser.js lib/ll1.js",
+    "mutode": "mutode -c 8 lib/parser.js lib/ll1.js",
     "staticAnalisys": "npx eslint lib/*.js",
     "flow": "flow"
   },

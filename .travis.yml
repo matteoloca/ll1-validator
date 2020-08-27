@@ -10,6 +10,4 @@ scripts:
   - npm run prepublish
   - npm test
   - npm run report-coverage
-  - npm run mutode
-  - npm run staticAnalisys
 after_success: npm run coverage

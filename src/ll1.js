@@ -11,8 +11,17 @@ type RuleObject = { type: number ,value:string };
 type NullableRulesObj = {[string]:Array<boolean>}
 type NullableNonTerminalsObj = {[string]:boolean}
 
+function notEmpty(res){
+    return res.nullableNonTerminals===null && res.nullableRules===null;
+}
+
 function calculateNullables(input:InputObject): {nullableRules:NullableRulesObj,nullableNonTerminals:NullableNonTerminalsObj}{
-    
+    /*::`*/ pre:{ input!==null; input.grammar!==null;input.nonTerminals.length>=0; input.rulesNumber>=0}/*::`;*/
+    /*::`*/ post:{ /*::`;*/
+    /*::`*/    it.nullableRules!==null; /*::`;*/
+    /*::`*/    it.nullableNonTerminals!==null /*::`;*/
+    /*::`*/    it.nullableNonTerminals.length===it.nullableRules.length /*::`;*/
+    /*::`*/} /*::`;*/
     const grammar = input.grammar;
     const nonTerminals = input.nonTerminals;
     const nullableRules = {};
@@ -67,7 +76,9 @@ function calculateNullables(input:InputObject): {nullableRules:NullableRulesObj,
 
 }
 
-function ruleIsNullable(rule:Object, nullableNonTerminals:Object):boolean {
+function ruleIsNullable(rule:Array<RuleObject>, nullableNonTerminals:NullableNonTerminalsObj):boolean {
+    /*::`*/ pre:{ rule!==null; rule.length>=0;nullableNonTerminals!==null;}/*::`;*/
+    /*::`*/ post: it!==null; /*::`;*/
 
     let currentResult = true;
     for (const item of rule) {
@@ -84,7 +95,12 @@ function ruleIsNullable(rule:Object, nullableNonTerminals:Object):boolean {
     return currentResult;
 }
 
-function initializeFirstSets(input:InputObject): {[string]:Array<Array<Array<string>>>} {
+type FirstSetObj =Array<Array<Array<string>>>;
+type FirstSetGrammarObj = {[string]:FirstSetObj};
+
+function initializeFirstSets(input:InputObject): {} {
+    /*::`*/ pre:{ input!==null; input.grammar!==null;input.nonTerminals.length>=0;}/*::`;*/
+    /*::`*/ post:{ it!==null; Object.keys(it).length<=input.nonTerminals.length;} /*::`;*/
     const grammar = input.grammar;
     const result = {};
     const nullableNonTerminals = calculateNullables(input).nullableNonTerminals; // TODO reuse precomputed values
@@ -108,9 +124,11 @@ function initializeFirstSets(input:InputObject): {[string]:Array<Array<Array<str
 }
 
 function calculateFirstSetsDependencies(input:InputObject) {
+    /*::`*/ pre:{ input!==null; input.grammar!==null;input.nonTerminals.length>=0;}/*::`;*/
+    /*::`*/ post:{ it!==null; Object.keys(it).length<=input.nonTerminals.length} /*::`;*/
     const grammar = input.grammar;
     const result = {};
-    const nullableNonTerminals = calculateNullables(input).nullableNonTerminals; // TODO reuse precomputed values
+    const nullableNonTerminals = calculateNullables(input).nullableNonTerminals;
     input.nonTerminals.forEach(l => {
         result[l] = [];
         grammar[l].forEach((r, index) => {
@@ -130,7 +148,9 @@ function calculateFirstSetsDependencies(input:InputObject) {
     return result;
 }
 
-function getAggregateFirstSet(set:Object, nonTerminal:Object, index: number) {
+function getAggregateFirstSet(set:FirstSetGrammarObj, nonTerminal:string, index: number) {
+    /*::`*/ pre:{ set!==null; index>=0;nonTerminal.length>0;}/*::`;*/
+    /*::`*/ post:{ it!==null; } /*::`;*/
     const result = new Set();
     set[nonTerminal].forEach(item => {
         item[index].forEach(v => result.add(v));
@@ -138,7 +158,9 @@ function getAggregateFirstSet(set:Object, nonTerminal:Object, index: number) {
     return result;
 }
 
-function calculateFirstSets(input:InputObject):{[string]:Array<Array<Array<string>>>} {
+function calculateFirstSets(input:InputObject):FirstSetGrammarObj {
+    /*::`*/ pre:{ input!==null; input.grammar!==null;input.nonTerminals.length>=0;}/*::`;*/
+    /*::`*/ post:{ it!==null } /*::`;*/
     const firstSets = initializeFirstSets(input);
     const depencencies = calculateFirstSetsDependencies(input);
     let doLoop = true;
