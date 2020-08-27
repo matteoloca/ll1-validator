@@ -1,7 +1,7 @@
 import test from 'ava';
-const parser = require('../src/parser.js');
-const errors = require('../src/errors');
-const warnings = require('../src/warnings');
+const parser = require('../lib/parser.js');
+const errors = require('../lib/errors');
+const warnings = require('../lib/warnings');
 
 test('simple case', t => {
     const input = `S -> a S;`
@@ -190,6 +190,12 @@ test('start symbol not found error', t => {
     `;
     const f = () => parser.parseString(input);
     t.throws(f, errors.StartSymbolNotFound);
+});
+
+test('empty input', t => {
+    const input = ``;
+    const f = () => parser.parseString(input);
+    t.throws(f, Error);
 });
 
 test('duplicated rule case 1', t => {

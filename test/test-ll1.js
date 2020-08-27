@@ -1,6 +1,6 @@
 import test from 'ava';
-const parser = require('../src/parser');
-const ll1 = require('../src/ll1');
+const parser = require('../lib/parser');
+const ll1 = require('../lib/ll1');
 
 test('calculate nullables case 1', t => {
     const input = {

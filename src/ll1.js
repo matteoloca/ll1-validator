@@ -1,9 +1,18 @@
+// @flow
 const parser = require('./parser');
 const errors = require('./errors');
+const warning = require ('./warnings');
 const assert = require('assert');
 
-function calculateNullables(input) {
+type InputObject = {grammar:GrammarObject, startSymbol:string, rulesNumber:number, terminals:Array<string>, nonTerminals:Array<string>, warnings: Array<any>};
+type GrammarObject = { [string]: Array<Array<RuleObject>> };
+type RuleObject = { type: number ,value:string };
 
+type NullableRulesObj = {[string]:Array<boolean>}
+type NullableNonTerminalsObj = {[string]:boolean}
+
+function calculateNullables(input:InputObject): {nullableRules:NullableRulesObj,nullableNonTerminals:NullableNonTerminalsObj}{
+    
     const grammar = input.grammar;
     const nonTerminals = input.nonTerminals;
     const nullableRules = {};
@@ -54,12 +63,11 @@ function calculateNullables(input) {
         })
 
     }
-
     return { nullableRules, nullableNonTerminals }
 
 }
 
-function ruleIsNullable(rule, nullableNonTerminals) {
+function ruleIsNullable(rule:Object, nullableNonTerminals:Object):boolean {
 
     let currentResult = true;
     for (const item of rule) {
@@ -76,7 +84,7 @@ function ruleIsNullable(rule, nullableNonTerminals) {
     return currentResult;
 }
 
-function initializeFirstSets(input) {
+function initializeFirstSets(input:InputObject): {[string]:Array<Array<Array<string>>>} {
     const grammar = input.grammar;
     const result = {};
     const nullableNonTerminals = calculateNullables(input).nullableNonTerminals; // TODO reuse precomputed values
@@ -99,7 +107,7 @@ function initializeFirstSets(input) {
     return result;
 }
 
-function calculateFirstSetsDependencies(input) {
+function calculateFirstSetsDependencies(input:InputObject) {
     const grammar = input.grammar;
     const result = {};
     const nullableNonTerminals = calculateNullables(input).nullableNonTerminals; // TODO reuse precomputed values
@@ -122,7 +130,7 @@ function calculateFirstSetsDependencies(input) {
     return result;
 }
 
-function getAggregateFirstSet(set, nonTerminal, index) {
+function getAggregateFirstSet(set:Object, nonTerminal:Object, index: number) {
     const result = new Set();
     set[nonTerminal].forEach(item => {
         item[index].forEach(v => result.add(v));
@@ -130,7 +138,7 @@ function getAggregateFirstSet(set, nonTerminal, index) {
     return result;
 }
 
-function calculateFirstSets(input) {
+function calculateFirstSets(input:InputObject):{[string]:Array<Array<Array<string>>>} {
     const firstSets = initializeFirstSets(input);
     const depencencies = calculateFirstSetsDependencies(input);
     let doLoop = true;
@@ -160,7 +168,9 @@ function calculateFirstSets(input) {
     return firstSets;
 }
 
-function calculateFollowSetDependencies(input) //First run for follow sets: gets non terminals and terminals next to each non terminal
+type Follow_nonTerminalsObj = { [string]: Array<string> };
+type Follow_terminalsObj = {[string]: Array<Array<Array<string>>> }; 
+function calculateFollowSetDependencies(input:InputObject):{follow_nonTerminals:Follow_nonTerminalsObj,follow_terminals:Follow_terminalsObj} //First run for follow sets: gets non terminals and terminals next to each non terminal
 {
     const grammar = input.grammar;
     const axiom = input.startSymbol;
@@ -216,7 +226,7 @@ function calculateFollowSetDependencies(input) //First run for follow sets: gets
     }
 }
 
-function calculateFollowSets(input) {
+function calculateFollowSets(input:InputObject):Follow_terminalsObj {
     var followsets = {}
     const axiom = input.startSymbol;
     const followSetsDep = calculateFollowSetDependencies(input)
@@ -245,12 +255,7 @@ function calculateFollowSets(input) {
     return followsets;
 }
 
-/**
- * 
- * @param {object} obj 
- * @param {Number} iter 
- */
-function isDifferent(obj, iter) {
+function isDifferent(obj:Object, iter: number):boolean {
     var ret = false;
     Object.keys(obj).forEach(e => {
         assert(obj[e].length>iter);
@@ -264,11 +269,9 @@ function isDifferent(obj, iter) {
 
 }
 
-/**
- * 
- * @param {object} input 
- */
-function calculateLookAheads(input) {
+type LookAheadsObj ={ [string]: Array<Array<string>>};
+
+function calculateLookAheads(input:InputObject):LookAheadsObj {
     const grammar = input.grammar;
     var ret = {};
     const axiom = input.startSymbol;
@@ -297,7 +300,8 @@ function calculateLookAheads(input) {
     return ret;
 }
 
-function isLL1(input) {
+function isLL1(input:InputObject):boolean {
+   
     const lookaheads = calculateLookAheads(input);
     var res = true;
     Object.keys(lookaheads).forEach(l => {
@@ -310,13 +314,8 @@ function isLL1(input) {
     return res;
 }
 
-/**
- * 
- * @param {String} nonTerminal 
- * @param {Object} input 
- * @param {Array<Array<String>>} lookaheads 
- */
-function calculateConflicts(nonTerminal, input = {}, lookaheads = {}) { // input and/or followsets MUST BE passed
+type ConflictObj=Array<string>
+function calculateConflicts(nonTerminal:string, input:InputObject = {}, lookaheads:LookAheadsObj = {}): ConflictObj {  // input and/or followsets MUST BE passed
     assert(nonTerminal!=null)
     
     var terminals = [];
@@ -337,8 +336,8 @@ function calculateConflicts(nonTerminal, input = {}, lookaheads = {}) { // input
     });
     return ret;
 }
-
-function calculateAllConflicts(input) {
+type ConflictSetsObj={[string]:Array<ConflictObj>}
+function calculateAllConflicts(input:InputObject): ConflictSetsObj {
     const lookaheads = calculateLookAheads(input);
     var res = {};
     Object.keys(lookaheads).forEach(l => {

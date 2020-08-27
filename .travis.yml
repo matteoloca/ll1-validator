@@ -2,7 +2,14 @@ language: node_js
 node_js:
   - 12
 install:
-  - npm install codecov nyc ava mutode
+  - npm install codecov nyc ava mutode 
+  - npm install --save-dev @babel/core @babel/cli @babel/preset-flow
+  - npm install --save-dev flow-bin eslint
 scripts:
-  - npm run report-coverage 
+  - npm run flow init
+  - npm run prepublish
+  - npm test
+  - npm run report-coverage
+  - npm run mutode
+  - npm run staticAnalisys
 after_success: npm run coverage
