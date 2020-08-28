@@ -7,6 +7,7 @@
     "build": "babel src/ -d lib/",
     "prepublish": "npm run build",
     "test": "nyc ava",
+    "mocha":"mocha mocha-test",
     "report-coverage": "nyc --reporter=lcov ava",
     "coverage": "codecov",
     "mutode": "mutode -c 8 lib/parser.js lib/ll1.js",
@@ -36,6 +37,8 @@
   },
   "dependencies": {
     "antlr4": "^4.7.2",
+    "expect.js": "^0.3.1",
+    "mocha": "^8.1.2",
     "mutode": "^1.4.2",
     "source-map-loader": "^1.0.2"
   },

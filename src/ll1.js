@@ -11,9 +11,6 @@ type RuleObject = { type: number ,value:string };
 type NullableRulesObj = {[string]:Array<boolean>}
 type NullableNonTerminalsObj = {[string]:boolean}
 
-function notEmpty(res){
-    return res.nullableNonTerminals===null && res.nullableRules===null;
-}
 
 function calculateNullables(input:InputObject): {nullableRules:NullableRulesObj,nullableNonTerminals:NullableNonTerminalsObj}{
     /*::`*/ pre:{ input!==null; input.grammar!==null;input.nonTerminals.length>=0; input.rulesNumber>=0}/*::`;*/
@@ -277,7 +274,8 @@ function calculateFollowSets(input:InputObject):Follow_terminalsObj {
     return followsets;
 }
 
-function isDifferent(obj:Object, iter: number):boolean {
+
+function isDifferent(obj:Follow_terminalsObj, iter: number):boolean {
     var ret = false;
     Object.keys(obj).forEach(e => {
         assert(obj[e].length>iter);
@@ -342,9 +340,9 @@ function calculateConflicts(nonTerminal:string, input:InputObject = {}, lookahea
     
     var terminals = [];
     var ret = [];
-    if (lookaheads == []) {
+    /*if (lookaheads == []) {
         lookaheads = calculateLookAheads(input);
-    }
+    }*/
     lookaheads[nonTerminal].forEach(r => {
         r.forEach(t => {
             if (terminals.includes(t)) {
@@ -374,6 +372,7 @@ module.exports.calculateNullables = calculateNullables;
 module.exports.initializeFirstSets = initializeFirstSets;
 module.exports.calculateFirstSetsDependencies = calculateFirstSetsDependencies;
 module.exports.calculateFirstSets = calculateFirstSets;
+module.exports.isDifferent=isDifferent;
 module.exports.calculateFollowSets = calculateFollowSets;
 module.exports.calculateFollowSetDependencies = calculateFollowSetDependencies;
 module.exports.calculateLookAheads = calculateLookAheads;

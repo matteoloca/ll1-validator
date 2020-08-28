@@ -1,6 +1,7 @@
 import test from 'ava';
 const parser = require('../lib/parser');
 const ll1 = require('../lib/ll1');
+const errors = require('../lib/errors');
 
 test('calculate nullables case 1', t => {
     const input = {
@@ -1278,3 +1279,24 @@ test('calculate conflicts case 1', t => {
             ['a', 'b', 'x', 'y'],
     });
 });
+
+test('Error Loop', t => {
+        const input = {
+            grammar: {
+            'S': [
+                [{ type: parser.NONTERMINAL, value: 'A' }]
+            ],
+            'A': [
+                [{ type: parser.NONTERMINAL, value: 'S' }]
+                ]
+            },
+            startSymbol: 'S',
+            rulesNumber: 2,
+            terminals: [],
+            nonTerminals: ['A', 'S'],
+        }
+
+        const f = () => ll1.calculateAllConflicts(input);
+        t.throws(f, errors.SemanticError); 
+    });
+    
