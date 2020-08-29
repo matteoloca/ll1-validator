@@ -95,7 +95,7 @@ function ruleIsNullable(rule:Array<RuleObject>, nullableNonTerminals:NullableNon
 type FirstSetObj =Array<Array<Array<string>>>;
 type FirstSetGrammarObj = {[string]:FirstSetObj};
 
-function initializeFirstSets(input:InputObject): {} {
+function initializeFirstSets(input:InputObject): FirstSetGrammarObj {
     /*::`*/ pre:{ input!==null; input.grammar!==null;input.nonTerminals.length>=0;}/*::`;*/
     /*::`*/ post:{ it!==null; Object.keys(it).length<=input.nonTerminals.length;} /*::`;*/
     const grammar = input.grammar;

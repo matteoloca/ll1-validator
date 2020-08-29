@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - 12
 install:
-  - npm install codecov nyc ava 
+  - npm install codecov nyc ava  mocha
   - npm install --save-dev @babel/core @babel/cli @babel/preset-flow
   - npm install --save-dev flow-bin eslint
 scripts:
