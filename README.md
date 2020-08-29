@@ -1,7 +1,6 @@
 
 # LL(1) Validator
 
-[![npm version](https://badge.fury.io/js/ll1-validator.svg)](https://badge.fury.io/js/ll1-validator)
 ![](https://github.com/imcatta/ll1-validator/workflows/Node%20CI/badge.svg)
 ![](https://github.com/imcatta/ll1-validator/workflows/Node.js%20Package/badge.svg)
 ![](https://travis-ci.com/matteoloca/ll1-validator.svg?branch=master)
