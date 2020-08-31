@@ -7,7 +7,7 @@ var fs = require('fs');
 function testParIsDifferent(){
     return ll1.isDifferent(arguments[0],arguments[1]);
 }
-//come dovrà comportarsi mocka per testare la funzione testParIsDifferent
+//come dovrà comportarsi mocha per testare la funzione testParIsDifferent
 describe('testParIsDifferent()',function(){
     var correctobjects=[
         { args: [ { ']S': [['↙'],['↙'],['↙']],'T': [['a', 'b', 'c'],['a', 'b', 'c', '↙'], ['a', 'b', 'c', '↙']]}, 2 ],

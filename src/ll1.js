@@ -1,8 +1,7 @@
 // @flow
-const parser = require('./parser');
-const errors = require('./errors');
-const warning = require ('./warnings');
-const assert = require('assert');
+const parser = require("./parser");
+const errors = require("./errors");
+const assert = require("assert");
 
 type InputObject = {grammar:GrammarObject, startSymbol:string, rulesNumber:number, terminals:Array<string>, nonTerminals:Array<string>, warnings: Array<any>};
 type GrammarObject = { [string]: Array<Array<RuleObject>> };
@@ -34,12 +33,12 @@ function calculateNullables(input:InputObject): {nullableRules:NullableRulesObj,
             nonTerminals.forEach(l => {
                 nullableRules[l].forEach((rule, index) => {
                     if (rule === undefined) {
-                        const ruleString = grammar[l][index].map(v => v.value).join(' ');
+                        const ruleString = grammar[l][index].map(v => v.value).join(" ");
                         involvedNT.push(`[${l} -> ${ruleString}]`);
                     }
                 });
             });
-            throw new errors.SemanticError(`Loop detected: ${involvedNT.sort().join(', ')}`);
+            throw new errors.SemanticError(`Loop detected: ${involvedNT.sort().join(", ")}`);
         }
         doLoop = false;
         remainingCycles -= 1;
@@ -247,7 +246,6 @@ function calculateFollowSetDependencies(input:InputObject):{follow_nonTerminals:
 
 function calculateFollowSets(input:InputObject):Follow_terminalsObj {
     var followsets = {}
-    const axiom = input.startSymbol;
     const followSetsDep = calculateFollowSetDependencies(input)
     const non_terminals = followSetsDep.follow_nonTerminals;
     const initial_followsets = followSetsDep.follow_terminals;
@@ -294,7 +292,6 @@ type LookAheadsObj ={ [string]: Array<Array<string>>};
 function calculateLookAheads(input:InputObject):LookAheadsObj {
     const grammar = input.grammar;
     var ret = {};
-    const axiom = input.startSymbol;
     const firstSets = calculateFirstSets(input);
     const followSets = calculateFollowSets(input);
     const nullableRules = calculateNullables(input).nullableRules;
@@ -325,7 +322,7 @@ function isLL1(input:InputObject):boolean {
     const lookaheads = calculateLookAheads(input);
     var res = true;
     Object.keys(lookaheads).forEach(l => {
-        const conf = calculateConflicts(l, input, lookaheads).length;
+        const conf = calculateConflicts(l, lookaheads).length;
         if (conf > 0) {
             res = false;
 
@@ -335,7 +332,7 @@ function isLL1(input:InputObject):boolean {
 }
 
 type ConflictObj=Array<string>
-function calculateConflicts(nonTerminal:string, input:InputObject = {}, lookaheads:LookAheadsObj = {}): ConflictObj {  // input and/or followsets MUST BE passed
+function calculateConflicts(nonTerminal:string, lookaheads:LookAheadsObj = {}): ConflictObj {  // input and/or followsets MUST BE passed
     assert(nonTerminal!=null)
     
     var terminals = [];
@@ -361,7 +358,7 @@ function calculateAllConflicts(input:InputObject): ConflictSetsObj {
     const lookaheads = calculateLookAheads(input);
     var res = {};
     Object.keys(lookaheads).forEach(l => {
-        const conf = calculateConflicts(l, input, lookaheads);
+        const conf = calculateConflicts(l, lookaheads);
         res[l] = conf.slice();
     });
     return res;

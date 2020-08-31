@@ -1,8 +1,8 @@
-const antlr4 = require('antlr4');
-const GrammarlangLexer = require('../grammarlang/grammarlangLexer').grammarlangLexer;
-const GrammarlangParser = require('../grammarlang/grammarlangParser').grammarlangParser;
-const errors = require('./errors');
-const warnings = require('./warnings');
+const antlr4 = require("antlr4");
+const GrammarlangLexer = require("../grammarlang/grammarlangLexer").grammarlangLexer;
+const GrammarlangParser = require("../grammarlang/grammarlangParser").grammarlangParser;
+const errors = require("/errors");
+const warnings = require("./warnings");
 
 const NONTERMINAL = 0;
 const TERMINAL = 1;
@@ -19,10 +19,10 @@ class Visitor {
     let startSymbol = undefined;
 
     ctx.children.forEach(child => {
-      if (child.constructor.name === 'Start_symbolContext') {
+      if (child.constructor.name === "Start_symbolContext") {
         startSymbol = this.visitStartSymbol(child);
 
-      } else if (child.constructor.name === 'Rule_Context') {
+      } else if (child.constructor.name === "Rule_Context") {
         const rule = this.visitRule(child);
         rules.push(rule);
         nonTerminals.add(rule.l);
@@ -33,11 +33,11 @@ class Visitor {
     });
 
     if (startSymbol === undefined) {
-      throw new Error('Fatal error');
+      throw new Error("Fatal error");
     }
     if (!nonTerminals.has(startSymbol)) {
       throw new errors.StartSymbolNotFound(
-        `At least one production from the start symbol '${startSymbol}' is required`);
+        `At least one production from the start symbol "${startSymbol}" is required`);
     }
 
     const grammar = {};
@@ -80,9 +80,9 @@ class Visitor {
     let l;
     let r = [];
     ctx.children.forEach(element => {
-      if (element.constructor.name === 'LContext') {
+      if (element.constructor.name === "LContext") {
         l = this.visitL(element);
-      } else if (element.constructor.name === 'RContext' && element.children) {
+      } else if (element.constructor.name === "RContext" && element.children) {
         r = this.visitR(element);
       }
     });
@@ -137,12 +137,12 @@ class Visitor {
 
 class LexerErrorListener extends antlr4.error.ErrorListener {
   syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
-    throw new errors.LexerError(`[${line}:${column}] ${msg}`);
+    throw new errors.LexerError(`[${line}:${column}] ${e} - ${msg}`);
   }
 }
 class ParserErrorListener extends antlr4.error.ErrorListener {
   syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
-    throw new errors.ParserError(`[${line}:${column}] ${msg}`);
+    throw new errors.ParserError(`[${line}:${column}] ${e} - ${msg}`);
   }
 }
 

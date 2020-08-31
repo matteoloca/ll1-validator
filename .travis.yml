@@ -6,8 +6,9 @@ install:
   - npm install --save-dev @babel/core @babel/cli @babel/preset-flow
   - npm install --save-dev flow-bin eslint
 scripts:
+  - npm run flow
   - npm run prepublish
   - npm test
   - npm run mocha
-  - npm run report-coverage
+  - npm run staticAnalisys
 after_success: npm run coverage

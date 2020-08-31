@@ -1,5 +1,5 @@
-const ll1 = require('./ll1');
-const parser = require('./parser');
+const ll1 = require("./ll1");
+const parser = require("./parser");
 
 const validate = (grammarString) => {
     const parsedValue = parser.parseString(grammarString);

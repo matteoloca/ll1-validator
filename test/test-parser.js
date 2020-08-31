@@ -192,11 +192,6 @@ test('start symbol not found error', t => {
     t.throws(f, errors.StartSymbolNotFound);
 });
 
-test('empty input', t => {
-    const input = ``;
-    const f = () => parser.parseString(input);
-    t.throws(f, Error);
-});
 
 test('duplicated rule case 1', t => {
     const input = `
