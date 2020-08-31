@@ -1,7 +1,7 @@
 const antlr4 = require("antlr4");
 const GrammarlangLexer = require("../grammarlang/grammarlangLexer").grammarlangLexer;
 const GrammarlangParser = require("../grammarlang/grammarlangParser").grammarlangParser;
-const errors = require("/errors");
+const errors = require("./errors");
 const warnings = require("./warnings");
 
 const NONTERMINAL = 0;
