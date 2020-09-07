@@ -186,7 +186,7 @@ La chiamata a Babel che trasforma il codice "sporco" in codice javascript compli
 #Il codice originale è in src/ mentre quello trasformato da Babel in lib/
 babel src/ -d lib/
 ```
-Il risultato si può vedere nell'esempio sotto
+Nelle post-condizioni si utilizza ``it`` per riferirsi al valore restituito dalla funzione. Il risultato si può vedere nell'esempio sotto
 ```javascript
 //da src/ll1.js
 function getAggregateFirstSet(set, nonTerminal, index) {
@@ -222,9 +222,11 @@ function getAggregateFirstSet(set, nonTerminal, index) {
   });
   return _getAggregateFirstSetPostcondition(result);
 }
-
 ```
-La struttura di questo plugin DbC ha portato con se un secondo problema: il type checker rileva i contratti come errori (giustamente, visto che non si tratta di codice javascript), di conseguenza per permettere ai due tool di convivere inseriamo tutti i contratti all'interno di caratteri speciali che il type checker riconosce come commenti, permettendo così ai due tool di convivere senza problemi.<br>
+Si può notare come le precondizioni vengano inserite prima del codice hand-made, mentre la post-condizione diventa una funziona chiamata dopo il return.
+
+
+La struttura di questo plugin DbC ha portato con se un secondo problema: il type checker rileva i contratti come errori (come si può vedere nell'esempio sopra la sezione dei contratti non è codice javascript), di conseguenza per permettere ai due tool di convivere inseriamo tutti i contratti all'interno di caratteri speciali che il type checker riconosce come commenti, permettendo così ai due tool di coesistere senza problemi.<br>
 Un contratto all'interno del codice lo si troverà scritto nel seguente modo
 ```javascript
 function getAggregateFirstSet(set, nonTerminal, index) {
@@ -240,7 +242,7 @@ function getAggregateFirstSet(set, nonTerminal, index) {
 
 ## Analisi statica
 Per l'analisi statica è stato utilizzato [EsLynt](https://eslint.org/). Questo tool oltre ad analizzare staticamente il codice permette anche di risolvere automaticamente gli errori trovati. <br>
-è stato utilizato su tutti i file presenti in lib/ ha presentato qualche errore per variabili inutilizzate, ma per la maggior parte ha solo presentato warnings riguardanti problemi su virgolette non secondo standard.
+É stato utilizato su tutti i file presenti in lib/ ha presentato qualche errore per variabili inutilizzate, ma per la maggior parte ha solo presentato warnings riguardanti problemi su virgolette non secondo standard.
 ```
 npx eslint lib/*.js
 
@@ -298,8 +300,13 @@ npx flow #Controlla solo i file con @flow. Comando equivalente a npx flow check
 npx flow check --all #Controlla tutti i file
 ```
 Non è necessario specificare i tipi a flow, in quanto è in grado di capire il tipo di parametro atteso (per maggiori informazioni vedere [qui](https://flow.org/en/docs/getting-started/)), per questo ho forzato i tipi all'interno del solo file `ll1.js`
+
+Visto l'utilizzo di una struttura di dati molto più complicata rispetto alle strutture base (nell'esempio sottostante si può osservare come gli oggetti siano abbastanza complessi) si è deciso di utilizzare il type aliasing (per maggiori informazioni [cliccare qui](https://flow.org/en/docs/types/aliases/)). Il Type aliasing permette di descrivere oggetti complessi in maniera rapida, permettendo poi di utilizzarli in tutto il codice. 
 ```javascript
 //da src/ll1.js
+type RuleObject = { type: number ,value:string };
+type NullableNonTerminalsObj = {[string]:boolean}
+//...
 function ruleIsNullable(rule:Array<RuleObject>, nullableNonTerminals:NullableNonTerminalsObj):boolean {
     /*::`*/ pre:{ rule!==null; rule.length>=0;nullableNonTerminals!==null;}/*::`;*/
     /*::`*/ post: it!==null; /*::`;*/
@@ -358,18 +365,34 @@ Sono stati creati alcuni scenari avalla per simulare il comportamento della macc
 ## Model Checking
 Per poter effettuare il model checking della macchina è stato necessario semplificare nettamente la macchina, togliendo di fatto tutta la parte di salvataggio della regola (si mantiene salvata solo la regola attuale) e restringendo il dominio degli input da stringhe ad un sottodominio composto da poche parole. Successivamente sono state implementate formule CTL e LTL per verificare le proprietà della macchina. L'implementazione si trova in *ASMETA/ll1validator/ll1validatorSimplified.asm*
 ```
+-- specification AG (input = EOFILE -> AX done)  is true
+-- specification !E [ !(input = EOFILE | readState = ERR) U !((!done | AG !(input = EOFILE | readState = ERR)) | (input = EOFILE | readState = ERR)) ]   is true
+-- specification AG ((readState != NT & (input = ARR & !done)) -> AX readState = ERR)  is true
+-- specification AG ((readState != EOR & (!done & input = EOFILE)) -> AX readState = ERR)  is true
+-- specification AG ((readState = EOR & (!done & input = LX)) -> AX actnt = LX)  is true
+-- specification AG ((readState = EOR & (!done & input = LY)) -> AX actnt = LY)  is true
+-- specification AG ((readState = EOR & (!done & input = LZ)) -> AX actnt = LZ)  is true
+-- specification AG ((readState = EOR & (input = LS & !done)) -> AX actnt = LS)  is true
+-- specification (input = EOFILE ->  X done)  is true
+-- specification (done ->  Y (input = EOFILE | readState = ERR))  is true
+-- specification ((readState != NT & (input = ARR & !done)) ->  X readState = ERR)  is true
+-- specification ((readState != EOR & (!done & input = EOFILE)) ->  X readState = ERR)  is true
+-- specification ((readState = EOR & (!done & input = LX)) ->  X actnt = LX)  is true
+-- specification ((readState = EOR & (!done & input = LY)) ->  X actnt = LY)  is true
+-- specification ((readState = EOR & (!done & input = LZ)) ->  X actnt = LZ)  is true
+-- specification ((readState = EOR & (input = LS & !done)) ->  X actnt = LS)  is true
 
 ```
 
 ## Model advisor
-è stato eseguito il Model Advisor ma non sono stati riscontrati problemi.
+É  stato eseguito il Model Advisor e non sono stati riscontrati problemi.
 
 # Model-based Testing
 ## Input Domain Modeling
 Si è deciso di lavorare sul metodo parseString(input) presente nel file ```parser.js```. Vista la complessità dell'input ho usato un approccio functionality-based, che mi ha permesso di implementare un test per ogni categoria rilevata. Si può verificare l'implementazione e le categorie scelte in *test/input-domain-testing.js*
 
 ## Combinatorial Testing
-è stato utilizzato un approccio 3-WISE per testare il parsing di un regola
+É stato utilizzato un approccio 3-WISE per testare il parsing di un regola. I vincoli impediscono di avere una regola composta con un solo non-terminale
 ### Modello base
 ```
 Model Rule

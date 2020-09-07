@@ -2,6 +2,7 @@ asm ll1validatorSimplified
 
 import StandardLibrary
 import CTLlibrary
+import LTLlibrary
 
 signature:
 	// DOMAINS
@@ -85,6 +86,27 @@ definitions:
 	
 	//Se leggo EOF senza prima essere in EOR allora vado in errore
 	CTLSPEC ag((not done and input = EOFILE and readState != EOR) implies ax(readState=ERR))
+	
+	
+	// se l'input è EOF allo stato successivo termina
+	LTLSPEC input = EOFILE implies x(done)
+	// non può terminare finché input = EOF
+	LTLSPEC done implies y(input = EOFILE or readState=ERR) 
+	
+	//Se leggo la freccia devo essere in stato NT 
+	LTLSPEC (not done and input = ARR and readState != NT) implies x(readState=ERR)
+	//Se leggo un NT ad inizio riga esso diventerà il carattere non terminale di inizio
+	LTLSPEC (not done and input = LX and readState = EOR) implies x(actnt=LX)
+	//Se leggo un NT ad inizio riga esso diventerà il carattere non terminale di inizio
+	LTLSPEC (not done and input = LY and readState = EOR) implies x(actnt=LY)
+	//Se leggo un NT ad inizio riga esso diventerà il carattere non terminale di inizio
+	LTLSPEC (not done and input = LZ and readState = EOR) implies x(actnt=LZ)
+	//Se leggo un NT ad inizio riga esso diventerà il carattere non terminale di inizio
+	LTLSPEC (not done and input = LS and readState = EOR) implies x(actnt=LS)
+	
+	//Se leggo EOF senza prima essere in EOR allora vado in errore
+	LTLSPEC (not done and input = EOFILE and readState != EOR) implies x(readState=ERR)
+	
 	
 	
 	// MAIN rule
