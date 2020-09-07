@@ -120,7 +120,7 @@ Per generare test parametrici è stato necessario utilizzare una seconda test su
 I test sono stati posizionati in una differente cartella, visto che le due test-suite sono incompatibili tra loro.
 Per l'esecuzione dei test parametrici occorre definire la funzione di test e la funzione che estrae i dati parametrici e lancia la funzione di test N volte.
 ```javascript
-//da mocha-test/parametrictest.js
+//da mocha-test/parametric-test.js
 const ll1 = require('../lib/ll1')
 const assert = require('assert');
 var expect = require('expect.js');
@@ -411,7 +411,7 @@ Model Rule
    # nt2==A => (nt2!=A or nt3!=A) #	
    # nt3==B => (nt2!=B or nt3!=B) #   	
 ```
-L'implementazione si trova in *mocha-test/parametrictest.js*
+L'implementazione si trova in *mocha-test/combinatorial-test.js*
 ## Yakindu
 Tramite Yakindu ho generato una state machine che simula il parsing delle regole. Si fa uso di:
 - Eventi di input

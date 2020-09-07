@@ -1,8 +1,6 @@
 const ll1 = require('../lib/ll1');
-const parser = require ('../lib/parser');
 const assert = require('assert');
 var expect = require('expect.js');
-var fs = require('fs');
 
 function testParIsDifferent(){
     return ll1.isDifferent(arguments[0],arguments[1]);

@@ -1,3 +1,7 @@
+const parser = require ('../lib/parser');
+var expect = require('expect.js');
+var fs = require('fs');
+
 //Combinatorial Testing
 function testCombSimpleCases(){
     var res= parser.parseString(arguments[0]);
