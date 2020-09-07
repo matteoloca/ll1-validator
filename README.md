@@ -31,12 +31,10 @@ Per poterlo utilizzare è sufficiente scaricare il package e impostarlo come pac
   "description": "A tool that checks if a given grammar is LL(1).",
   "main": "lib/index.js",
   "scripts": {
-    "test": "ava",
-    [...]
+    "test": "ava"
   },
   "devDependencies": {
-    "ava": "^2.4.0",
-    [...]
+    "ava": "^2.4.0"
   }
 }
 ```
@@ -327,7 +325,13 @@ function ruleIsNullable(rule:Array<RuleObject>, nullableNonTerminals:NullableNon
 }
 ```
 Babel nella fase di interpretazione del testo si occuperà di rimuovere tutti i commenti relativi allo static typing e produrrà un file "pulito".<br>
-Come detto in precedenza è incompatibile con il DbC e l'inserimento delle righe di commento rende i file di output un po' "sporchi"
+Come detto in precedenza è incompatibile con il DbC e l'inserimento delle righe di commento rende i file di output un po' "sporchi".
+
+L'esecuzione di flow con un controllo su tutti i file non ha segnalato alcun problema
+```
+>flow "check"
+Found 0 errors
+```
 
 ## Continuous Integration
 Per la continuous integration ho utilizzato [Travis CI](https://travis-ci.org/github/matteoloca/ll1-validator).
