@@ -11,13 +11,15 @@ LL(1) Validator is a javascript package that checks if a given a [context-free g
 # Introduzione
 Fork del progetto [ll1-validator](https://github.com/imcatta/ll1-validator), un validatore javascript per la grammatica LL(1). Fornisce
 * Parsing di stringhe in grammatiche LL(1)
-* Individuazione di regole duplicate, regole irraggiungibili, cicli, Non terminali annullabili, First Sets, Follow Sets, Look Aheads e valutazione se la grammatica fornita è di tipo LL(1)
+* Individuazione di regole duplicate, regole irraggiungibili, cicli, Non terminali annullabili, First Sets, Follow Sets, Look Aheads e valutazione se la grammatica fornita è di tipo LL(1).
 
-Per visualizzare una live demo visitare [questo URL](https://ll1-validator.netlify.app/)
+Per visualizzare una live demo visitare [questo URL](https://ll1-validator.netlify.app/).
 
-Il progetto ha i file eseguibili in *lib/*, in *src/* si trovano i file originali con descrizione di contratti e tipi, in *test/* si trovano i test con AVA e in *mocha-test/* si trovano i test fatti con mocha.
+Questa fork implementa testing, analisi statica, modeling e model-based testing. Le funzionalità sono le medesime.
 
-In *ASMETA/* si trova il modello in asm mentre in *YAKINDU* si trova la FSM.
+Il progetto ha i file eseguibili in *lib/*, in *src/* si trovano i file originali con descrizione di contratti e tipi, in *test/* si trovano i test con AVA e in *mocha-test/* si trovano i test fatti con Mocha.
+
+In *ASMETA/* si trova il modello in asm mentre in *YAKINDU/* si trova la FSM.
 
 
 # Code testing
@@ -417,12 +419,13 @@ Model Rule
    # nt3==B => (nt2!=B or nt3!=B) #   	
 ```
 ## Yakindu
-Tramite Yakindu ho generato una state machine che simula il parsing delle regole. Si fa uso di:
+Tramite Yakindu ho generato una finite state machine che simula il parsing delle regole. Si fa uso di:
 - Eventi di input
 - Azioni su Transizioni
 - Azioni in stati
 - Guardie su transizioni
 - Variabili
 
+É presente uno stato fittizio che permette di riavviare la FSM con il comando RESTARTFSM in input
 ## Author
-Matteo Locatelli
+Matteo Locatelli, matricola 1041449
