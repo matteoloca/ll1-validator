@@ -17,13 +17,13 @@ Per visualizzare una live demo visitare [questo URL](https://ll1-validator.netli
 
 Il progetto ha i file eseguibili in *lib/*, in *src/* si trovano i file originali con descrizione di contratti e tipi, in *test/* si trovano i test con AVA e in *mocha-test/* si trovano i test fatti con mocha.
 
-In *ASMETA/* si trova il modello in asm mentre in *YAKINDU* si trova la FSM
+In *ASMETA/* si trova il modello in asm mentre in *YAKINDU* si trova la FSM.
 
 
 # Code testing
 ## Testing suite
 Per effettuare i test è stato utilizzato il package AVA, un packetto ottenibile tramite npm [a questo link](https://www.npmjs.com/package/ava). I suoi punti di forza sono la rapidità d'uso e di esecuzione, include le asserzioni e permette unit test.<br/>
-Per poterlo utilizzare è sufficiente scaricare il package e impostarlo come pachetto per l'esecuzione dei test dal file `package.json`
+Per poterlo utilizzare è sufficiente scaricare il package e impostarlo come pachetto per l'esecuzione dei test dal file `package.json`.
 ```json
 {
   "name": "ll1-validator",
@@ -38,7 +38,7 @@ Per poterlo utilizzare è sufficiente scaricare il package e impostarlo come pac
   }
 }
 ```
-Una volta impostato si può procedere a scrivere ed eseguire i test. Nel file designato per la scrittura dei test occorre importare il pacchetto ava
+Una volta impostato si può procedere a scrivere ed eseguire i test. Nel file designato per la scrittura dei test occorre importare il pacchetto ava.
 ```javascript
 //Da test/test-parser.js
 const test = require('ava');
@@ -63,19 +63,21 @@ test('simple case', t => {
     });
 });
 ```
-Per eseguire i test occorrre scrivere nella console
+Per eseguire i test occorrre scrivere nella console:
 ```bash
 npm test
 #oppure
 npx ava
 ```
-I test vengono eseguiti e il risultato viene mostrato a schermo
-<p><span style="color:green">54 tests passed</span></p>
+I test vengono eseguiti e il risultato viene mostrato a schermo.
+```
+54 tests passed
+```
 
 
 ## Coverage
 Per la copertura è stato usato [Istanbul](https://istanbul.js.org/) per avere risultati a riga di comando, mentre [codecov.io](https://codecov.io/gh/matteoloca/ll1-validator) per l'integrazione all'interno di Github.
-Per utilizzare Istanbul con ava è sufficiente modificare il comando per lanciare i test
+Per utilizzare Istanbul con ava è sufficiente modificare il comando per lanciare i test:
 ```json
 scripts: {
   "test": "nyc ava"
@@ -100,11 +102,11 @@ All files               |   85.21 |    64.22 |   74.05 |   84.83 |
 ------------------------|---------|----------|---------|---------|---------------
 ```
 ## Mutation testing
-Per effettuare i test di mutazione è stato utilizzato [Mutode](https://www.npmjs.com/package/mutode). Il mutation testing è una tipologia di testing utilizzata per valutare la qualità del testing: i file originali vengono leggermente modificati e si valuta se i test sono in grado di rilevare l'anomalia di funzionamento. Per eseguire i test occorre eseguire
+Per effettuare i test di mutazione è stato utilizzato [Mutode](https://www.npmjs.com/package/mutode). Il mutation testing è una tipologia di testing utilizzata per valutare la qualità del testing: i file originali vengono leggermente modificati e si valuta se i test sono in grado di rilevare l'anomalia di funzionamento. Per eseguire i test occorre eseguire:
 ```bash
 npx mutode
 ```
-In questo caso abbiamo eseguito i test di mutazione solo su `parser.js` e su `ll1.js`
+In questo caso abbiamo eseguito i test di mutazione solo su `parser.js` e su `ll1.js`.
 ```bash
 npx mutode -c 8 lib/parser.js lib/ll1.js
 #I test eseguiti sono circa 450 per file
@@ -155,9 +157,10 @@ describe('testParIsDifferent()',function(){
 ```
 # Verification
 ## Assertions
-Le assertions sono presenti in tutti i linguaggi di programmazione: si rivelano molto utili per i programmatori in quanto validano una condizione booleana che deve essere sempre vera: quando non lo è genera una eccezione, permettendo così agli sviluppatori di individuare comportamenti anomali.<br>
+Le assertions sono presenti in tutti i linguaggi di programmazione: si rivelano molto utili per i programmatori in quanto validano una condizione booleana che deve essere sempre vera: quando non lo è genera una eccezione, permettendo così agli sviluppatori di individuare comportamenti anomali.
+
 Le asserzioni vengono generalmente disabilitate negli ambienti di produzione dato che la valutazione dell'espressione genera un overhead indesiderabile.
-In node.js è presente nativamente un modulo che contiene le asserzioni, ovvero **assert**. è sufficiente importare il modulo per poterlo utilizare
+In node.js è presente nativamente un modulo che contiene le asserzioni, ovvero **assert**. è sufficiente importare il modulo per poterlo utilizare:
 ```javascript
 //da lib/ll1.js
 var assert=require('assert');
@@ -179,12 +182,12 @@ function isDifferent(obj, iter) {
 ```
 ## Design By Contract
 Per l'integrazione con i contratti è stato utilizzato [Babel Contracts](https://github.com/codemix/babel-plugin-contracts). Si tratta di un plugin di [Babel](https://babeljs.io/) che permette di scrivere contratti in una modo simile a quello visto per JML. A differenza di JML però i contratti vengono scritti direttamente nel codice e questo ci obbliga a "compilare" il codice tramite Babel che interpreta il testo e lo trasforma in codice javascript.
-La chiamata a Babel che trasforma il codice "sporco" in codice javascript compliant è il seguente
+La chiamata a Babel che trasforma il codice "sporco" in codice javascript-compliant è il seguente:
 ```bash
 #Il codice originale è in src/ mentre quello trasformato da Babel in lib/
 babel src/ -d lib/
 ```
-Nelle post-condizioni si utilizza ``it`` per riferirsi al valore restituito dalla funzione. Il risultato si può vedere nell'esempio sotto
+Nelle post-condizioni si utilizza ``it`` per riferirsi al valore restituito dalla funzione. Il risultato si può vedere nell'esempio sotto:
 ```javascript
 //da src/ll1.js
 function getAggregateFirstSet(set, nonTerminal, index) {
@@ -221,11 +224,11 @@ function getAggregateFirstSet(set, nonTerminal, index) {
   return _getAggregateFirstSetPostcondition(result);
 }
 ```
-Si può notare come le precondizioni vengano inserite prima del codice hand-made, mentre la post-condizione diventa una funziona chiamata dopo il return.
+Si può notare come le precondizioni vengano inserite prima del codice hand-made, mentre la post-condizione diventa una funziona chiamata nel return.
 
 
 La struttura di questo plugin DbC ha portato con se un secondo problema: il type checker rileva i contratti come errori (come si può vedere nell'esempio sopra la sezione dei contratti non è codice javascript), di conseguenza per permettere ai due tool di convivere inseriamo tutti i contratti all'interno di caratteri speciali che il type checker riconosce come commenti, permettendo così ai due tool di coesistere senza problemi.<br>
-Un contratto all'interno del codice lo si troverà scritto nel seguente modo
+Un contratto all'interno del codice lo si troverà scritto nel seguente modo:
 ```javascript
 function getAggregateFirstSet(set, nonTerminal, index) {
     /*::`*/ pre:{ set!==null; index>=0;nonTerminal.length>0;} /* ::`; */
@@ -240,7 +243,7 @@ function getAggregateFirstSet(set, nonTerminal, index) {
 
 ## Analisi statica
 Per l'analisi statica è stato utilizzato [EsLynt](https://eslint.org/). Questo tool oltre ad analizzare staticamente il codice permette anche di risolvere automaticamente gli errori trovati. <br>
-É stato utilizato su tutti i file presenti in lib/ ha presentato qualche errore per variabili inutilizzate, ma per la maggior parte ha solo presentato warnings riguardanti problemi su virgolette non secondo standard.
+É stato utilizato su tutti i file presenti in *lib/* ha presentato qualche errore per variabili inutilizzate, ma per la maggior parte ha solo presentato warnings riguardanti problemi su virgolette non secondo standard.
 ```
 npx eslint lib/*.js
 
@@ -288,7 +291,7 @@ I problemi sono stati prontamente risolti e il risultato è il seguente:
 ## Type checking
 Per il type checking si è deciso di utilizzare [Flow](https://flow.org/).
 Come accennato precedentemente anch'esso si appoggia a Babel e ha necessità di un preset che integri tutti i comandi di Flow (per maggioi informazioni vedere [qui](https://flow.org/en/docs/install/)).<br>
-Per segnalare a Flow quali file sono da verificare occorre inserire all'inizio di ogni file la seguente riga
+Per segnalare a Flow quali file sono da verificare occorre inserire all'inizio di ogni file la seguente riga:
 ```javascript
 // @flow
 ```
@@ -297,7 +300,7 @@ In alternativa si può chiamare Flow con il flag --all per obbligarlo a controll
 npx flow #Controlla solo i file con @flow. Comando equivalente a npx flow check
 npx flow check --all #Controlla tutti i file
 ```
-Non è necessario specificare i tipi a flow, in quanto è in grado di capire il tipo di parametro atteso (per maggiori informazioni vedere [qui](https://flow.org/en/docs/getting-started/)), per questo ho forzato i tipi all'interno del solo file `ll1.js`
+Non è necessario specificare i tipi a flow, in quanto è in grado di capire il tipo di parametro atteso (per maggiori informazioni [vedere qui](https://flow.org/en/docs/getting-started/)), per questo ho forzato i tipi all'interno del solo file `ll1.js`.
 
 Visto l'utilizzo di una struttura di dati molto più complicata rispetto alle strutture base (nell'esempio sottostante si può osservare come gli oggetti siano abbastanza complessi) si è deciso di utilizzare il type aliasing (per maggiori informazioni [cliccare qui](https://flow.org/en/docs/types/aliases/)). Il Type aliasing permette di descrivere oggetti complessi in maniera rapida, permettendo poi di utilizzarli in tutto il codice. 
 ```javascript
@@ -324,10 +327,10 @@ function ruleIsNullable(rule:Array<RuleObject>, nullableNonTerminals:NullableNon
     return currentResult;
 }
 ```
-Babel nella fase di interpretazione del testo si occuperà di rimuovere tutti i commenti relativi allo static typing e produrrà un file "pulito".<br>
+Babel nella fase di interpretazione del testo si occuperà di rimuovere tutti i commenti relativi allo static typing e produrrà un file pulito.<br>
 Come detto in precedenza è incompatibile con il DbC e l'inserimento delle righe di commento rende i file di output un po' "sporchi".
 
-L'esecuzione di flow con un controllo su tutti i file non ha segnalato alcun problema
+L'esecuzione di flow con un controllo su tutti i file non ha segnalato alcun problema.
 ```
 >flow "check"
 Found 0 errors
@@ -353,18 +356,18 @@ scripts:
   - npm run staticAnalisys
 after_success: npm run coverage
 ```
-Viene istanziata una VM contenente il node.js installato, dopdiché vengono installati tutti i pacchetti, dopodiché viene fatto lo type checking, si creano i file js "puliti" e si effettuano test e analisi statica. Se tutto è passato si effettua la copertura. <br>
-Il mutation testing è stato escluso perché la quantità di mutanti creata impiega troppo tempo e manda in timeout la VM di Travis.
+Viene istanziata una VM contenente il node.js installato, dopdiché vengono installati tutti i pacchetti, viene fatto il type checking, si creano i file js "puliti" e si effettuano test e analisi statica. Se tutti i passaggi avvengono senza errori si effettua la copertura. <br>
+Il mutation testing è stato escluso perché la quantità di mutanti creata impiega troppo tempo nell'esecuzione e manda in timeout la VM di Travis.
 
 # Modeling
 ## Modello ASM
 Utilizzando ASMETA ho creato una macchina che implementa (in maniera semplificata) il persing del testo in input e restituisce la lista di regole con tutti i Non Terminali. Per l'implementazione si faccia riferimento alla cartella  *ASMETA/ll1validator/ll1validator.asm*. L'implementazione fa uso di funzioni n-arie, statihe, derivate e abstract domain.
 
 ## Simulazione/Animazione
-Il modello asmeta si è compliato correttamente e il funzionamento è come atteso
+Il modello ASMETA si è compilato correttamente e il funzionamento è come atteso.
 
 ## Validazione scenari
-Sono stati creati alcuni scenari avalla per simulare il comportamento della macchina e constatare che funzioni come previsto. Gli scneari si trovano all'interno della cartella *ASMETA/ll1validator/scenarios*
+Sono stati creati alcuni scenari Avalla per simulare il comportamento della macchina e constatare che funzioni come previsto. Gli scenari si trovano all'interno della cartella *ASMETA/ll1validator/scenarios*
 
 ## Model Checking
 Per poter effettuare il model checking della macchina è stato necessario semplificare nettamente la macchina, togliendo di fatto tutta la parte di salvataggio della regola (si mantiene salvata solo la regola attuale) e restringendo il dominio degli input da stringhe ad un sottodominio composto da poche parole. Successivamente sono state implementate formule CTL e LTL per verificare le proprietà della macchina. L'implementazione si trova in *ASMETA/ll1validator/ll1validatorSimplified.asm*
@@ -396,7 +399,7 @@ Per poter effettuare il model checking della macchina è stato necessario sempli
 Si è deciso di lavorare sul metodo parseString(input) presente nel file ```parser.js```. Vista la complessità dell'input ho usato un approccio functionality-based, che mi ha permesso di implementare un test per ogni categoria rilevata. Si può verificare l'implementazione e le categorie scelte in *test/input-domain-testing.js*
 
 ## Combinatorial Testing
-É stato utilizzato un approccio 3-WISE per testare il parsing di un regola. I vincoli impediscono di avere una regola composta con un solo non-terminale
+É stato utilizzato un approccio 3-WISE per testare il parsing di un regola. I vincoli impediscono di avere una regola composta con un solo non-terminale.
 ### Modello base
 ```
 Model Rule
@@ -421,4 +424,4 @@ Tramite Yakindu ho generato una state machine che simula il parsing delle regole
 - Variabili
 
 ## Author
-* Matteo Locatelli
+Matteo Locatelli
