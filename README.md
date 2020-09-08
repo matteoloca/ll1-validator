@@ -93,10 +93,10 @@ All files               |   85.21 |    64.22 |   74.05 |   84.83 |
  grammarlang            |   76.43 |    37.14 |   30.61 |   76.27 |                                                                                                                                  
   grammarlangLexer.js   |   96.15 |      100 |   66.67 |      96 | 73                                                                                                                               
   grammarlangListener.js|    87.5 |      100 |       0 |    87.5 | 7-8                                                                                                                              
-  grammarlangParser.js  |   73.73 |    37.14 |   37.14 |   73.62 | [...] 
+  grammarlangParser.js  |   73.73 |    37.14 |   37.14 |   73.62 | ...327,330,342,346-347,352-353,371-376,387,390,402-408,414-415,420-421,448-453 
  lib                    |   92.08 |    77.03 |     100 |   91.76 |                                                                                                                                  
   errors.js             |     100 |      100 |     100 |     100 |                                                                                                                                  
-  ll1.js                |   89.82 |    72.95 |     100 |   89.49 | [...]             
+  ll1.js                |   89.82 |    72.95 |     100 |   89.49 | ...137,167,171,179,183,187,222,226,234,238,242,277,285,289,293,311,319,323,327            
   parser.js             |   98.84 |    96.15 |     100 |   98.75 | 38                                                                                                                               
   warnings.js           |     100 |      100 |     100 |     100 |                                                                                                                                  
 ------------------------|---------|----------|---------|---------|---------------
@@ -361,7 +361,7 @@ Il mutation testing è stato escluso perché la quantità di mutanti creata impi
 
 # Modeling
 ## Modello ASM
-Utilizzando ASMETA ho creato una macchina che implementa (in maniera semplificata) il persing del testo in input e restituisce la lista di regole con tutti i Non Terminali. Per l'implementazione si faccia riferimento alla cartella  *ASMETA/ll1validator/ll1validator.asm*. L'implementazione fa uso di funzioni n-arie, statihe, derivate e abstract domain.
+Utilizzando ASMETA ho creato una macchina che implementa (in maniera semplificata) il persing del testo in input e restituisce la lista di regole con tutti i Non Terminali. Per l'implementazione si faccia riferimento alla cartella  *ASMETA/ll1validator/ll1validator.asm*. L'implementazione fa uso di funzioni n-arie, statiche, derivate e abstract domain.
 
 ## Simulazione/Animazione
 Il modello ASMETA si è compilato correttamente e il funzionamento è come atteso.
@@ -399,7 +399,9 @@ Per poter effettuare il model checking della macchina è stato necessario sempli
 Si è deciso di lavorare sul metodo parseString(input) presente nel file ```parser.js```. Vista la complessità dell'input ho usato un approccio functionality-based, che mi ha permesso di implementare un test per ogni categoria rilevata. Si può verificare l'implementazione e le categorie scelte in *test/input-domain-testing.js*
 
 ## Combinatorial Testing
-É stato utilizzato un approccio 3-WISE per testare il parsing di un regola. I vincoli impediscono di avere una regola composta con un solo non-terminale.
+É stato utilizzato un approccio 3-WISE per testare il parsing di un regola. I vincoli impediscono di avere una regola composta con un solo non-terminale. L'oracolo effettua una verifica automatica, di conseguenza viene valutato solo se viene dato in output un oggetto: la funzione di parsing dovrebbe fornire sempre un risultato senza fornire errore.
+
+L'implementazione si trova in *mocha-test/combinatorial-test.js*
 ### Modello base
 ```
 Model Rule
@@ -414,7 +416,6 @@ Model Rule
    # nt2==A => (nt2!=A or nt3!=A) #	
    # nt3==B => (nt2!=B or nt3!=B) #   	
 ```
-L'implementazione si trova in *mocha-test/combinatorial-test.js*
 ## Yakindu
 Tramite Yakindu ho generato una state machine che simula il parsing delle regole. Si fa uso di:
 - Eventi di input
